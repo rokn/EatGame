@@ -1,0 +1,42 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EatMe", "EatMe\EatMe\EatMe.csproj", "{B7B6AD46-DA61-433A-A642-9588AACC8201}"
+EndProject
+Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "EatMeContent", "EatMe\EatMeContent\EatMeContent.contentproj", "{F61F4A15-3550-4993-BA71-4E4A8E4953B4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECS", "ECS\ECS.csproj", "{53E7656C-0A86-4E7D-8655-446C3387F0CD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B7B6AD46-DA61-433A-A642-9588AACC8201}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{B7B6AD46-DA61-433A-A642-9588AACC8201}.Debug|x86.ActiveCfg = Debug|x86
+		{B7B6AD46-DA61-433A-A642-9588AACC8201}.Debug|x86.Build.0 = Debug|x86
+		{B7B6AD46-DA61-433A-A642-9588AACC8201}.Release|Any CPU.ActiveCfg = Release|x86
+		{B7B6AD46-DA61-433A-A642-9588AACC8201}.Release|x86.ActiveCfg = Release|x86
+		{B7B6AD46-DA61-433A-A642-9588AACC8201}.Release|x86.Build.0 = Release|x86
+		{F61F4A15-3550-4993-BA71-4E4A8E4953B4}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{F61F4A15-3550-4993-BA71-4E4A8E4953B4}.Debug|x86.ActiveCfg = Debug|x86
+		{F61F4A15-3550-4993-BA71-4E4A8E4953B4}.Release|Any CPU.ActiveCfg = Release|x86
+		{F61F4A15-3550-4993-BA71-4E4A8E4953B4}.Release|x86.ActiveCfg = Release|x86
+		{53E7656C-0A86-4E7D-8655-446C3387F0CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53E7656C-0A86-4E7D-8655-446C3387F0CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53E7656C-0A86-4E7D-8655-446C3387F0CD}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{53E7656C-0A86-4E7D-8655-446C3387F0CD}.Debug|x86.Build.0 = Debug|Any CPU
+		{53E7656C-0A86-4E7D-8655-446C3387F0CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53E7656C-0A86-4E7D-8655-446C3387F0CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53E7656C-0A86-4E7D-8655-446C3387F0CD}.Release|x86.ActiveCfg = Release|Any CPU
+		{53E7656C-0A86-4E7D-8655-446C3387F0CD}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
