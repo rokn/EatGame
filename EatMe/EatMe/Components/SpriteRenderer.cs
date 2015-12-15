@@ -4,8 +4,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace EatMe.Components
 {
-	public class SpriteRenderer : Component
+	public class SpriteRenderer : Component, IDrawableComponent
 	{
+		public int DrawLayer { get; set; }
 		public Texture2D Texture { get; set; }
 		public Vector2 Origin { get; set; }
 		public Color Color { get; set; }
@@ -26,10 +27,10 @@ namespace EatMe.Components
 			Transperency = 1.0f;
 		}
 
-		public override void Draw()
+		public void Draw()
 		{
 			Transform transform = Entity.GetComponent<Transform>();
-			if (Texture != null && transform != null)
+			if(Texture != null && transform != null)
 			{
 				Main.SpriteBatch.Draw(Texture, transform.Position, null, Color * Transperency, (float)transform.Rotation, Origin, transform.Scale, SpriteEffects.None, 0.1f);
 			}

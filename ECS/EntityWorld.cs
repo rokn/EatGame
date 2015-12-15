@@ -38,7 +38,10 @@ namespace ECS
 
 		public void Update(double deltaTime)
 		{
-			foreach (var component in _entities.SelectMany(entity => entity.GetComponents()))
+			foreach (IUpdateableComponent
+				 component in _entities
+				 .SelectMany(entity => entity.GetComponents()
+				 .OfType<IUpdateableComponent>()))
 			{
 				component.Update(deltaTime);
 			}
@@ -46,7 +49,10 @@ namespace ECS
 
 		public void Draw()
 		{
-			foreach (var component in _entities.SelectMany(entity => entity.GetComponents()).OrderBy(comp => comp.DrawLayer))
+			foreach (IDrawableComponent component in _entities
+				.SelectMany(entity => entity.GetComponents()
+				.OfType<IDrawableComponent>()
+				.OrderBy(component => -component.DrawLayer)))
 			{
 				component.Draw();
 			}

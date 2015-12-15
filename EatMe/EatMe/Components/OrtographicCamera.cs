@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 
 namespace EatMe.Components
 {
-	public class OrtographicCamera : Component
+	public class OrtographicCamera : Component, IUpdateableComponent
 	{
 		private Transform _transform;
 		private Point _screenSize;
@@ -21,17 +21,21 @@ namespace EatMe.Components
 			_transform.Position = new Vector2(_screenSize.X,_screenSize.Y);
 		}
 
+		public void Update(double deltaTime)
+		{
+			CalculateMatrix();
+		}
+
 		public void SmoothFollow(Transform target, float smoothTime, double deltaTime)
 		{
 			Vector2 goalPos = target.Position;
 			_transform.Position = Vector2.SmoothStep(_transform.Position, goalPos, smoothTime * (float)deltaTime);
-			CalculateMatrix();
+			
 		}
 
 		public void SmoothFollow(Transform target, float smoothTime, double deltaTime, Vector2 offset)
 		{
-			Vector2 goalPos = target.Position + offset;
-			_transform.Position = Vector2.SmoothStep(_transform.Position, goalPos, smoothTime * (float)deltaTime);
+			
 			CalculateMatrix();
 		}
 

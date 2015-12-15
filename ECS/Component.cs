@@ -1,21 +1,27 @@
 ﻿namespace ECS
 {
+	public interface IUpdateableComponent
+	{
+		void Update(double deltaTime);
+
+	}
+
+	public interface IDrawableComponent
+	{
+		int DrawLayer{ get; set; }
+		void Draw();
+	}
+
 	public class Component
 	{
 		public Entity Entity
 		{ get; set; }
 
-		public int DrawLayer { get; set; }
 		public EntityWorld World { get; set; }
 
 		public virtual void Start()
 		{}
 
-		public virtual void Update(double deltaTime)
-		{}
-
-		public virtual void Draw()
-		{}
 
 		public virtual void Destroy()
 		{}
