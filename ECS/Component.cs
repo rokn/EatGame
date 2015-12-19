@@ -12,6 +12,12 @@
 		void Draw();
 	}
 
+	public interface IGuiDrawableComponent
+	{
+		int GuiDrawLayer{ get; set; }
+		void GuiDraw();
+	}
+
 	public class Component
 	{
 		public Entity Entity
@@ -23,8 +29,7 @@
 		{}
 
 
-		public virtual void Destroy()
-		{}
+		public virtual void Destroy(){ }
 
 		public override bool Equals(object obj)
 		{
@@ -33,7 +38,7 @@
 			if(other == null)
 				return false;
 
-			return Entity.Equals(other.Entity) && this.GetType() == obj.GetType();
+			return Entity.Equals(other.Entity) && GetType() == obj.GetType();
 		}
 
 		public override int GetHashCode()

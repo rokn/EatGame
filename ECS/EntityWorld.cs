@@ -6,16 +6,31 @@ namespace ECS
 	public class EntityWorld
 	{
 		private readonly List<Entity> _entities;
+		private readonly List<Entity> _removeList; 
 
 		public EntityWorld()
 		{
 			_entities = new List<Entity>();
+			_removeList = new List<Entity>();
 		}
 
 		public void AddEntity(Entity entity)
 		{
 			_entities.Add(entity);
+
+			foreach (var component in entity.GetComponents())
+			{
+				component.World = this;
+			}
+
 			entity.World = this;
+		}
+
+		//TODO: Make add/remove entity event
+
+		public Entity GetEntityWithTag(string tag)
+		{
+			return _entities.FirstOrDefault(entity => tag == entity.Tag);
 		}
 
 		public IEnumerable<Entity> GetEntitiesWithTag(string tag)
@@ -23,9 +38,21 @@ namespace ECS
 			return _entities.Where(entity => tag == entity.Tag).ToList();
 		}
 
-		public Entity GetEntityWithTag(string tag)
+		public Entity GetEntityWithComponent<T>()
+			where T : Component
 		{
-			return _entities.FirstOrDefault(entity => tag == entity.Tag);
+			return _entities.FirstOrDefault(entity => entity.HasComponent<T>());
+		}
+
+		public IEnumerable<Entity> GetEntitiesWithComponent<T>()
+			where T : Component
+		{
+			return _entities.Where(entity => entity.HasComponent<T>()).ToList();
+		}
+
+		public void RemoveEntity(Entity entity)
+		{
+			_removeList.Add(entity);
 		}
 
 		public void Start()
@@ -45,16 +72,35 @@ namespace ECS
 			{
 				component.Update(deltaTime);
 			}
+
+			UpdateRemoveList();
 		}
 
 		public void Draw()
 		{
-			foreach (IDrawableComponent component in _entities
+			var query = _entities
 				.SelectMany(entity => entity.GetComponents()
-				.OfType<IDrawableComponent>()
-				.OrderBy(component => -component.DrawLayer)))
+					.OfType<IDrawableComponent>()).ToList();
+
+			var ordered = query.OrderBy(component => component.DrawLayer);
+
+			foreach (IDrawableComponent component in ordered)
 			{
 				component.Draw();
+			}
+		}
+
+		public void GuiDraw()
+		{
+			var query = _entities
+				.SelectMany(entity => entity.GetComponents()
+					.OfType<IGuiDrawableComponent>()).ToList();
+
+			var ordered = query.OrderBy(component => component.GuiDrawLayer);
+
+			foreach (IGuiDrawableComponent component in ordered)
+			{
+				component.GuiDraw();
 			}
 		}
 
@@ -64,6 +110,18 @@ namespace ECS
 			{
 				entity.Destroy();
 			}
+
+			UpdateRemoveList();
+		}
+
+		private void UpdateRemoveList()
+		{
+			foreach(var entity in _removeList)
+			{
+				_entities.Remove(entity);
+			}
+
+			_removeList.Clear();
 		}
 	}
 }

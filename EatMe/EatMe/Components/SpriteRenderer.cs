@@ -1,4 +1,6 @@
-﻿using ECS;
+﻿using System;
+using EatMe.UnifiedClasses;
+using ECS;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -12,11 +14,21 @@ namespace EatMe.Components
 		public Color Color { get; set; }
 		public float Transperency { get; set; }
 
+		private Transform _transform;
+
 		public SpriteRenderer()
 		{
 			Texture = null;
 			Color = Color.White;
 			Transperency = 1.0f;
+		}
+
+		public int Width => Texture?.Width ?? 0;
+		public int Height => Texture?.Height ?? 0;
+
+		public override void Start()
+		{
+			_transform = Entity.GetComponent<Transform>();
 		}
 
 		public SpriteRenderer(string filename)
@@ -29,11 +41,20 @@ namespace EatMe.Components
 
 		public void Draw()
 		{
-			Transform transform = Entity.GetComponent<Transform>();
-			if(Texture != null && transform != null)
+			//TODO: Ask about && and function calls
+			if(Texture != null && _transform != null && IsInView())
 			{
-				Main.SpriteBatch.Draw(Texture, transform.Position, null, Color * Transperency, (float)transform.Rotation, Origin, transform.Scale, SpriteEffects.None, 0.1f);
+				Main.SpriteBatch.Draw(Texture, _transform.Position, null, Color * Transperency, (float)_transform.Rotation, Origin, _transform.Scale, SpriteEffects.None, 0.1f);
 			}
+		}
+
+		private bool IsInView()
+		{
+			var maxDimension = Math.Max(Width, Height);
+			Vector2 pos = _transform.Position;
+//			if(Main.MainCamera.)
+			//TODO: Make Camera check for point in view with transofrmations
+			return true;
 		}
 	}
 }

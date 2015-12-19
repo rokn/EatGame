@@ -5,9 +5,11 @@ VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EatMe", "EatMe\EatMe\EatMe.csproj", "{B7B6AD46-DA61-433A-A642-9588AACC8201}"
 EndProject
-Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "EatMeContent", "EatMe\EatMeContent\EatMeContent.contentproj", "{F61F4A15-3550-4993-BA71-4E4A8E4953B4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EatMeContent", "EatMe\EatMeContent\EatMeContent.contentproj", "{F61F4A15-3550-4993-BA71-4E4A8E4953B4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECS", "ECS\ECS.csproj", "{53E7656C-0A86-4E7D-8655-446C3387F0CD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "INIFiles", "IniTest\INIFiles.csproj", "{EB574BED-78D2-40B9-8F6B-F21B98AE008C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,6 +37,14 @@ Global
 		{53E7656C-0A86-4E7D-8655-446C3387F0CD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{53E7656C-0A86-4E7D-8655-446C3387F0CD}.Release|x86.ActiveCfg = Release|Any CPU
 		{53E7656C-0A86-4E7D-8655-446C3387F0CD}.Release|x86.Build.0 = Release|Any CPU
+		{EB574BED-78D2-40B9-8F6B-F21B98AE008C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB574BED-78D2-40B9-8F6B-F21B98AE008C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB574BED-78D2-40B9-8F6B-F21B98AE008C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{EB574BED-78D2-40B9-8F6B-F21B98AE008C}.Debug|x86.Build.0 = Debug|Any CPU
+		{EB574BED-78D2-40B9-8F6B-F21B98AE008C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB574BED-78D2-40B9-8F6B-F21B98AE008C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB574BED-78D2-40B9-8F6B-F21B98AE008C}.Release|x86.ActiveCfg = Release|Any CPU
+		{EB574BED-78D2-40B9-8F6B-F21B98AE008C}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

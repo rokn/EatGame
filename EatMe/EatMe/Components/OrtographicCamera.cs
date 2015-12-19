@@ -1,5 +1,6 @@
 ﻿using ECS;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Design;
 
 namespace EatMe.Components
 {
@@ -18,7 +19,7 @@ namespace EatMe.Components
 		public override void Start()
 		{
 			_transform = Entity.GetComponent<Transform>();
-			_transform.Position = new Vector2(_screenSize.X,_screenSize.Y);
+			_transform.Position = new Vector2();
 		}
 
 		public void Update(double deltaTime)
@@ -26,21 +27,30 @@ namespace EatMe.Components
 			CalculateMatrix();
 		}
 
-		public void SmoothFollow(Transform target, float smoothTime, double deltaTime)
+		/// <summary>
+		/// Move the camera by a given amount
+		/// </summary>
+		/// <param name="amount">By how much to move the camera</param>
+		public void Move(Vector2 amount)
 		{
-			Vector2 goalPos = target.Position;
-			_transform.Position = Vector2.SmoothStep(_transform.Position, goalPos, smoothTime * (float)deltaTime);
-			
+			_transform.Position += amount;
 		}
-
-		public void SmoothFollow(Transform target, float smoothTime, double deltaTime, Vector2 offset)
-		{
-			
-			CalculateMatrix();
-		}
-
+		
+		/// <summary>
+		/// Update the dimensions of the camera
+		/// </summary>
+		/// <param name="newScreenSize"></param>
 		public void UpdateScreenDimensions(Point newScreenSize) => _screenSize = newScreenSize;
 
+		/// <summary>
+		/// Transform the screen coordinates into game coordinates
+		/// </summary>
+		/// <param name="screenPos">The coordinates on the screen</param>
+		/// <returns>Coordinates in the game</returns>
+		public Vector2 TransformScreenCoordinates(Vector2 screenPos)
+		{
+			return Vector2.Transform(screenPos, Matrix.Invert(TransformMatrix));
+		}
 
 		/// <summary>
 		/// Calculates the transform matrix of the camera
@@ -51,7 +61,7 @@ namespace EatMe.Components
 			TransformMatrix = Matrix.CreateTranslation(new Vector3(-_transform.Position.X, -_transform.Position.Y, 0)) *
 										 Matrix.CreateRotationZ((float) _transform.Rotation) *
 										 Matrix.CreateScale(new Vector3(_transform.Scale.X, _transform.Scale.Y, 1)) *
-										 Matrix.CreateTranslation(new Vector3(_screenSize.X / 2, _screenSize.Y / 2, 0));
+										 Matrix.CreateTranslation(new Vector3(_screenSize.X/2, _screenSize.Y/2, 0));
 		}
 	}
 }

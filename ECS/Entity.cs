@@ -24,7 +24,7 @@ namespace ECS
 
 		public static uint IdCount { get; private set; }
 		public uint Id { get; }
-		public string Tag { get; protected set; }
+		public string Tag { get; set; }
 		public EntityWorld World { get; set; }
 
 		/// <summary>
@@ -40,6 +40,7 @@ namespace ECS
 				return false;
 
 			component.Entity = this;
+			component.World = World;
 			_components.Add(typeName, component);
 			return true;
 		}
@@ -58,11 +59,24 @@ namespace ECS
 		/// <typeparam name="T">The type of the component to get</typeparam>
 		/// <returns>The compenent</returns>
 		public T GetComponent<T>()
-			where T : class
+			where T : Component
 		{
 			var type = typeof (T);
 
-			return _components.ContainsKey(type.ToString()) ? _components[type.ToString()] as T : null;
+			//			return _components.ContainsKey(type.ToString()) ? _components[type.ToString()] as T : null;
+
+			return (from kvp 
+					in _components
+					where kvp.Key == type.ToString() || kvp.Value.GetType().IsSubclassOf(type)
+					select kvp.Value).FirstOrDefault() as T;
+		}
+
+		public bool HasComponent<T>()
+			where T : Component
+		{
+			var type = typeof(T);
+
+			return _components.Any(kvp => type.ToString() == kvp.Key || kvp.Value.GetType().IsSubclassOf(type));
 		}
 
 		public List<Component> GetComponents()
@@ -86,6 +100,8 @@ namespace ECS
 			{
 				kvp.Value.Destroy();
 			}
+
+			World.RemoveEntity(this);
 		}
 	}
 }

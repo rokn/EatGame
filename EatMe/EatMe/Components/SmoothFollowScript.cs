@@ -14,7 +14,7 @@ namespace EatMe.Components
 
 		public SmoothFollowScript()
 		{
-			Target = null;
+			Target = new Transform();
 			IsFollowing = false;
 		}
 
