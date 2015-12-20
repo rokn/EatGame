@@ -7,13 +7,13 @@ namespace EatMe.Prefabs
 {
 	public class Food : Prefab
 	{
-		public static Food Instance = new Food();
+		public static Food ThisPrefab = new Food {Tag = "Food"};
 
 		public static int FoodInstances = 0;
 
-		public static Food GetInstance()
+		public static Food GetPrefab()
 		{
-			return Instance;
+			return ThisPrefab;
 		}
 
 		public static Entity Instantiate(Vector2 position)
@@ -26,19 +26,19 @@ namespace EatMe.Prefabs
 				Position = position
 			});
 
-			entity.AttachComponent(new SpriteRenderer("Sprites\\Food")
+			entity.AttachComponent(new SpriteRenderer(Configuration.SpritesFolder+"Food")
 			{
 				Color = HelperMethods.RandomColor(),
 				DrawLayer = 0
 			});
 
-			entity.Tag = "Food";
+			entity.Tag = ThisPrefab.Tag;
 
 			var imageSize = entity.GetComponent<SpriteRenderer>().Width;
 
 			entity.AttachComponent(new CircleCollider() { Radius = imageSize / 2 });
 
-			Instance.World.AddEntity(entity);
+			ThisPrefab.World.AddEntity(entity);
 
 			return entity;
 		}

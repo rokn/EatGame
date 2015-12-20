@@ -6,11 +6,12 @@ namespace EatMe.Prefabs
 {
 	public class Player : Prefab
 	{
-		private static readonly Player Instance = new Player();
+		private static readonly Player ThisPrefab = new Player{Tag = "Player"};
 
-		public static Player GetInstance()
+
+		public static Player GetPrefab()
 		{
-			return Instance;
+			return ThisPrefab;
 		}
 
 		public static Entity Instantiate(Vector2 position,string skinName)
@@ -20,15 +21,15 @@ namespace EatMe.Prefabs
 			{
 				Position = position
 			});
-			entity.AttachComponent(new SpriteRenderer(string.Format("Sprites\\{0}", skinName)) {DrawLayer = 1});
+			entity.AttachComponent(new SpriteRenderer(string.Format("{0}{1}", Configuration.SpritesFolder ,skinName)) {DrawLayer = Configuration.PlayerMinDrawLayer});
 			entity.AttachComponent(new CellScript()
 			{
-				Radius = 30
+				Radius = Configuration.PlayerStartingRadius
 			});
 
-			entity.Tag = "Player";
+			entity.Tag = ThisPrefab.Tag;
 
-			Instance.World.AddEntity(entity);
+			ThisPrefab.World.AddEntity(entity);
 
 			return entity;
 		}

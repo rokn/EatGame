@@ -1,7 +1,7 @@
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace Ini
+namespace INIFiles
 {
 	/// <summary>
 	///     Create a New INI file to store or load data
@@ -42,11 +42,12 @@ namespace Ini
 		/// </summary>
 		/// <param name="section">Section to read from</param>
 		/// <param name="key">The key to read</param>
+		/// <param name="defaultValue">The default alue if no key is found</param>
 		/// <returns>Returns the value of the key</returns>
-		public string IniReadValue(string section, string key)
+		public string IniReadValue(string section, string key, string defaultValue)
 		{
 			var temp = new StringBuilder(255);
-			GetPrivateProfileString(section, key, "", temp, 255, Path);
+			GetPrivateProfileString(section, key, defaultValue, temp, 255, Path);
 			return temp.ToString();
 		}
 	}

@@ -10,14 +10,14 @@
     <ApplicationIcon>
     </ApplicationIcon>
     <AssemblyKeyContainerName />
-    <AssemblyName>IniTest</AssemblyName>
+    <AssemblyName>INIFiles</AssemblyName>
     <AssemblyOriginatorKeyFile />
     <DefaultClientScript>JScript</DefaultClientScript>
     <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
     <DefaultTargetSchema>IE50</DefaultTargetSchema>
     <DelaySign>false</DelaySign>
-    <OutputType>WinExe</OutputType>
-    <RootNamespace>IniTest</RootNamespace>
+    <OutputType>Library</OutputType>
+    <RootNamespace>INIFiles</RootNamespace>
     <StartupObject />
     <FileUpgradeFlags>
     </FileUpgradeFlags>

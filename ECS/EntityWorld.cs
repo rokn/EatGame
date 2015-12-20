@@ -5,14 +5,24 @@ namespace ECS
 {
 	public class EntityWorld
 	{
+		#region Fields
+
 		private readonly List<Entity> _entities;
-		private readonly List<Entity> _removeList; 
+		private readonly List<Entity> _removeList;
+
+		#endregion
+
+		#region Constructors
 
 		public EntityWorld()
 		{
 			_entities = new List<Entity>();
 			_removeList = new List<Entity>();
 		}
+
+		#endregion
+
+		#region Entity Managment
 
 		public void AddEntity(Entity entity)
 		{
@@ -55,6 +65,10 @@ namespace ECS
 			_removeList.Add(entity);
 		}
 
+		#endregion
+
+		#region Main Functionality
+
 		public void Start()
 		{
 			foreach (var component in _entities.SelectMany(entity => entity.GetComponents()))
@@ -66,9 +80,9 @@ namespace ECS
 		public void Update(double deltaTime)
 		{
 			foreach (IUpdateableComponent
-				 component in _entities
-				 .SelectMany(entity => entity.GetComponents()
-				 .OfType<IUpdateableComponent>()))
+				component in _entities
+					.SelectMany(entity => entity.GetComponents()
+						.OfType<IUpdateableComponent>()))
 			{
 				component.Update(deltaTime);
 			}
@@ -113,6 +127,8 @@ namespace ECS
 
 			UpdateRemoveList();
 		}
+
+		#endregion
 
 		private void UpdateRemoveList()
 		{

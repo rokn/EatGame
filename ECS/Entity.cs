@@ -5,7 +5,13 @@ namespace ECS
 {
 	public class Entity
 	{
+		#region Fields
+
 		private readonly Dictionary<string, Component> _components;
+
+		#endregion
+
+		#region Constructors
 
 		static Entity()
 		{
@@ -22,10 +28,18 @@ namespace ECS
 			Tag = "Untagged";
 		}
 
+		#endregion
+
+		#region Properties
+
 		public static uint IdCount { get; private set; }
 		public uint Id { get; }
 		public string Tag { get; set; }
 		public EntityWorld World { get; set; }
+
+		#endregion
+
+		#region Component Managment
 
 		/// <summary>
 		///     Attaches a new componenet to the entity
@@ -65,16 +79,16 @@ namespace ECS
 
 			//			return _components.ContainsKey(type.ToString()) ? _components[type.ToString()] as T : null;
 
-			return (from kvp 
-					in _components
-					where kvp.Key == type.ToString() || kvp.Value.GetType().IsSubclassOf(type)
-					select kvp.Value).FirstOrDefault() as T;
+			return (from kvp
+				in _components
+				where kvp.Key == type.ToString() || kvp.Value.GetType().IsSubclassOf(type)
+				select kvp.Value).FirstOrDefault() as T;
 		}
 
 		public bool HasComponent<T>()
 			where T : Component
 		{
-			var type = typeof(T);
+			var type = typeof (T);
 
 			return _components.Any(kvp => type.ToString() == kvp.Key || kvp.Value.GetType().IsSubclassOf(type));
 		}
@@ -83,6 +97,8 @@ namespace ECS
 		{
 			return _components.Values.ToList();
 		}
+
+		#endregion
 
 		public override int GetHashCode()
 		{

@@ -72,7 +72,7 @@ namespace EatMe.Components
 
 		private void FoodCollision(Collider myCollider, Collider other)
 		{
-			if(other.Entity.Tag != "Food")
+			if(other.Entity.Tag != Food.GetPrefab().Tag)
 				return;
 
 			Radius += 10 / Radius;
@@ -84,16 +84,14 @@ namespace EatMe.Components
 
 		private void CellCollision(Collider myCollider, Collider other)
 		{
-			if(other.Entity.Tag != "Player")
+			if(other.Entity.Tag != Player.GetPrefab().Tag)
 				return;
 
 			var circleCollider = other as CircleCollider;
-			if (!(Radius - circleCollider?.Radius > 10)) return;
+			if (!(circleCollider?.Radius / Radius < Configuration.CellEatDiffrence)) return;
 
-			Radius += circleCollider.Radius/10;
+			Radius += circleCollider.Radius/3;
 			other.Entity.Destroy();
-
-			//			Entity.GetComponent<SpriteRenderer>().Color = other.Entity.GetComponent<SpriteRenderer>().Color;
 		}
 	}
 }

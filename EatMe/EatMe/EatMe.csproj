@@ -105,6 +105,10 @@
       <Project>{53e7656c-0a86-4e7d-8655-446c3387f0cd}</Project>
       <Name>ECS</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\INIFiles\INIFiles.csproj">
+      <Project>{eb574bed-78d2-40b9-8f6b-f21b98ae008c}</Project>
+      <Name>INIFiles</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EatMeContent\EatMeContent.contentproj">
       <Name>EatMeContent</Name>
       <XnaReferenceType>Content</XnaReferenceType>
@@ -127,7 +131,11 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="config.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />
   <!--
