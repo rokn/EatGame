@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
+using EatMe.Common;
 using EatMe.Components;
 using EatMe.Prefabs;
 using EatMe.UnifiedClasses;
@@ -9,6 +11,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Keys = Microsoft.Xna.Framework.Input.Keys;
+using EatMeServer;
 
 namespace EatMe
 {
@@ -20,9 +23,14 @@ namespace EatMe
 		{
 			Configuration.Load(Directory.GetCurrentDirectory() + "\\config.ini");
 
+			Client = new MeClient("localhost", 14242, "EatMe");
+			Client.FoodGenerateEvent += Client_FoodGenerateEvent;
+			Client.Connect("Rokner");
+
 			Graphics = new GraphicsDeviceManager(this);
 			Content.RootDirectory = "Content";
 			ContentManager = Content;
+			Components.Add(new FrameRateCounter(this));
 
 
 			ManageFullScreen();
@@ -30,12 +38,22 @@ namespace EatMe
 
 			World = new EntityWorld();
 
+			
+		}
+
+		private static void Client_FoodGenerateEvent(List<Vector2> food)
+		{
+			foreach (var vector2 in food)
+			{
+				Food.Instantiate(vector2);
+			}
 		}
 
 		#endregion
 
 		#region Properties
 
+		public static MeClient Client;
 		public GraphicsDeviceManager Graphics{ get; }
 		public static EntityWorld World { get; private set; }
 		public static SpriteBatch SpriteBatch { get; private set; }
@@ -50,17 +68,6 @@ namespace EatMe
 
 		#region Initialization
 
-		private static void GenerateStartFood(int foodCount)
-		{
-			for (var i = 0; i < foodCount; i++)
-			{
-				Food.Instantiate(new Vector2(
-					HelperMethods.Rand.Next(-WindowWidth/2, WindowWidth/2),
-					HelperMethods.Rand.Next(-WindowHeight/2, WindowHeight/2)
-					));
-			}
-		}
-
 		protected override void Initialize()
 		{
 			//Init static classes
@@ -69,35 +76,27 @@ namespace EatMe
 
 			//Init prefabs
 			Player.GetPrefab().AttachToWorld(World);
-			Camera.GetInstance().AttachToWorld(World);
+			Camera.GetPrefab().AttachToWorld(World);
 			Food.GetPrefab().AttachToWorld(World);
 
 			//Master object init
 			Entity masterObject = new Entity();
 			masterObject.AttachComponent(new CollisionChecker());
+			masterObject.Tag = "Master";
 			World.AddEntity(masterObject);
 
 			//Init a camera
 			Entity camera = Camera.Instantiate(WindowWidth, WindowHeight);
 
 			//Init a player
-			for (var i = 0; i < 1; i++)
+			for (var i = 0; i < 50; i++)
 			{
-				Player.Instantiate(new Vector2(500, 500 + i*90), "Skin_00_0");
+				Player.Instantiate("Skin_00_0");
 			}
 
-			_player = Player.Instantiate(new Vector2(), "Skin_00_0");
-			_player.AttachComponent(new SmoothFollowScript() {SmoothTime = 3});
+			_player = Player.Instantiate("Skin_01_0");
 			_player.AttachComponent(new PlayerController());
 
-//			player2.AttachComponent(new SmoothFollowScript() { SmoothTime = 3 });
-//			player2.AttachComponent(new PlayerController()
-//			{
-//				MovementSpeed = 400
-//			});
-
-
-			GenerateStartFood(300);
 
 			//Init Main camera
 			MainCamera = camera.GetComponent<OrtographicCamera>();
@@ -107,6 +106,9 @@ namespace EatMe
 			});
 
 			camera.GetComponent<Transform>().SetScale(1.0f);
+
+			//TODO: Why u wont work???
+//			camera.GetComponent<Transform>().Position = _player.GetComponent<Transform>().Position;
 
 			World.Start();
 			base.Initialize();
@@ -130,6 +132,8 @@ namespace EatMe
 
 		protected override void Update(GameTime gameTime)
 		{
+
+			Client.CheckForMessages();
 
 			var deltaTime = gameTime.ElapsedGameTime.TotalSeconds;
 

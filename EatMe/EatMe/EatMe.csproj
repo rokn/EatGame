@@ -5,7 +5,7 @@
     <ProjectTypeGuids>{6D335F3A-9D43-41b4-9D22-F6F17C4BE596};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>EatMe</RootNamespace>
     <AssemblyName>EatMe</AssemblyName>
@@ -59,6 +59,9 @@
     <PlatformTarget>x86</PlatformTarget>
     <XnaCompressContent>true</XnaCompressContent>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
     <Reference Include="Microsoft.Xna.Framework.Game, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
@@ -75,14 +78,13 @@
   <ItemGroup>
     <Compile Include="Components\CellScript.cs" />
     <Compile Include="Components\CircleCollider.cs" />
+    <Compile Include="Components\FoodRespawner.cs" />
     <Compile Include="Components\PlayerController.cs" />
     <Compile Include="Components\CollisionChecker.cs" />
-    <Compile Include="Configuration.cs" />
+    <Compile Include="FrameCounter.cs" />
     <Compile Include="UnifiedClasses\Input.cs" />
     <Compile Include="Components\SmoothFollowScript.cs" />
-    <Compile Include="UnifiedClasses\ExtensionMethods.cs" />
     <Compile Include="Prefabs\Food.cs" />
-    <Compile Include="UnifiedClasses\HelperMethods.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Prefabs\Camera.cs" />
     <Compile Include="Components\Collider.cs" />
@@ -101,13 +103,21 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\EatMe.Common\EatMe.Common.csproj">
+      <Project>{d8b7c690-9753-4fa4-9d03-ef4410b3ca3e}</Project>
+      <Name>EatMe.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\EatMeServer\EatMeServer.csproj">
+      <Project>{f85841dc-22a7-49b5-bf00-1890f5810861}</Project>
+      <Name>EatMeServer</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\ECS\ECS.csproj">
       <Project>{53e7656c-0a86-4e7d-8655-446c3387f0cd}</Project>
       <Name>ECS</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\INIFiles\INIFiles.csproj">
-      <Project>{eb574bed-78d2-40b9-8f6b-f21b98ae008c}</Project>
-      <Name>INIFiles</Name>
+    <ProjectReference Include="..\..\Networking\Networking.csproj">
+      <Project>{244f32e3-a7f7-4f61-8feb-878800527878}</Project>
+      <Name>Networking</Name>
     </ProjectReference>
     <ProjectReference Include="..\EatMeContent\EatMeContent.contentproj">
       <Name>EatMeContent</Name>

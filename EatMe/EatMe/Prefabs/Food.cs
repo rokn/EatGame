@@ -1,5 +1,5 @@
 ﻿using EatMe.Components;
-using EatMe.UnifiedClasses;
+using EatMe.Common;
 using ECS;
 using Microsoft.Xna.Framework;
 
@@ -15,6 +15,12 @@ namespace EatMe.Prefabs
 		{
 			return ThisPrefab;
 		}
+
+		public static Entity Instantiate()
+		{
+			return Instantiate(HelperMethods.GetRandomPositionInBounds());
+		}
+
 
 		public static Entity Instantiate(Vector2 position)
 		{
@@ -37,6 +43,7 @@ namespace EatMe.Prefabs
 			var imageSize = entity.GetComponent<SpriteRenderer>().Width;
 
 			entity.AttachComponent(new CircleCollider() { Radius = imageSize / 2 });
+			entity.AttachComponent(new FoodRespawner());
 
 			ThisPrefab.World.AddEntity(entity);
 

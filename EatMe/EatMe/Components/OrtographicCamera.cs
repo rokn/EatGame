@@ -1,6 +1,6 @@
-﻿using ECS;
+﻿using EatMe.Common;
+using ECS;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Design;
 
 namespace EatMe.Components
 {
@@ -8,10 +8,12 @@ namespace EatMe.Components
 	{
 		private Transform _transform;
 		private Point _screenSize;
+		public Rectangle _viewRectangle;
 
 		public OrtographicCamera(Point screenSize)
 		{
 			_screenSize = screenSize;
+			_viewRectangle = new Rectangle(0,0,screenSize.X,screenSize.Y);
 		}
 
 		public Matrix TransformMatrix { get; private set; }
@@ -20,11 +22,15 @@ namespace EatMe.Components
 		{
 			_transform = Entity.GetComponent<Transform>();
 			_transform.Position = new Vector2();
+			_viewRectangle.UpdateViaVector(_transform.Position);
 		}
 
 		public void Update(double deltaTime)
 		{
 			CalculateMatrix();
+			_viewRectangle = _viewRectangle.UpdateViaVector(TransformScreenCoordinates(new Vector2()));
+			_viewRectangle.Width = (int)(_screenSize.X * 1/_transform.Scale.X);
+			_viewRectangle.Height = (int)(_screenSize.Y * 1/_transform.Scale.Y);
 		}
 
 		/// <summary>
@@ -35,7 +41,7 @@ namespace EatMe.Components
 		{
 			_transform.Position += amount;
 		}
-		
+
 		/// <summary>
 		/// Update the dimensions of the camera
 		/// </summary>
@@ -43,7 +49,7 @@ namespace EatMe.Components
 		public void UpdateScreenDimensions(Point newScreenSize) => _screenSize = newScreenSize;
 
 		/// <summary>
-		/// Transform the screen coordinates into game coordinates
+		/// Transform screen coords into game coords
 		/// </summary>
 		/// <param name="screenPos">The coordinates on the screen</param>
 		/// <returns>Coordinates in the game</returns>
@@ -52,12 +58,23 @@ namespace EatMe.Components
 			return Vector2.Transform(screenPos, Matrix.Invert(TransformMatrix));
 		}
 
+		public bool IsInView(Vector2 point)
+		{
+			return _viewRectangle.Contains(point);
+		}
+
+		public bool IsInView(Rectangle rect)
+		{
+			return _viewRectangle.Intersects(rect);
+		}
+
 		/// <summary>
 		/// Calculates the transform matrix of the camera
-		/// based on the transform component and screen size
 		/// </summary>
 		private void CalculateMatrix()
 		{
+			if (_transform == null) return;
+
 			TransformMatrix = Matrix.CreateTranslation(new Vector3(-_transform.Position.X, -_transform.Position.Y, 0)) *
 										 Matrix.CreateRotationZ((float) _transform.Rotation) *
 										 Matrix.CreateScale(new Vector3(_transform.Scale.X, _transform.Scale.Y, 1)) *

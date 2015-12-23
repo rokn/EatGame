@@ -1,4 +1,5 @@
 ﻿using System;
+using EatMe.Common;
 using EatMe.Prefabs;
 using ECS;
 
@@ -75,7 +76,7 @@ namespace EatMe.Components
 			if(other.Entity.Tag != Food.GetPrefab().Tag)
 				return;
 
-			Radius += 10 / Radius;
+			Radius += 30 / Radius;
 
 			//			Entity.GetComponent<SpriteRenderer>().Color = other.Entity.GetComponent<SpriteRenderer>().Color;
 			other.Entity.Destroy();
@@ -90,7 +91,7 @@ namespace EatMe.Components
 			var circleCollider = other as CircleCollider;
 			if (!(circleCollider?.Radius / Radius < Configuration.CellEatDiffrence)) return;
 
-			Radius += circleCollider.Radius/3;
+			Radius += (circleCollider.Radius * circleCollider.Radius / Radius)/3;
 			other.Entity.Destroy();
 		}
 	}

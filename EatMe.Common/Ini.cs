@@ -1,7 +1,7 @@
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace INIFiles
+namespace EatMe.Common
 {
 	/// <summary>
 	///     Create a New INI file to store or load data

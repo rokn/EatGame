@@ -3,18 +3,27 @@
 
 	#region Component Interfaces
 
-	public interface IUpdateableComponent
+	public interface IComponent
+	{
+		Entity Entity{ get; set; }
+		EntityWorld World{ get; set; }
+
+		void Start();
+		void Destroy();
+	}
+
+	public interface IUpdateableComponent : IComponent
 	{
 		void Update(double deltaTime);
 	}
 
-	public interface IDrawableComponent
+	public interface IDrawableComponent : IComponent
 	{
 		int DrawLayer { get; set; }
-		void Draw();
+		bool Draw();
 	}
 
-	public interface IGuiDrawableComponent
+	public interface IGuiDrawableComponent : IComponent
 	{
 		int GuiDrawLayer { get; set; }
 		void GuiDraw();
@@ -22,7 +31,7 @@
 
 	#endregion
 
-	public class Component
+	public class Component : IComponent
 	{
 		#region Properties
 

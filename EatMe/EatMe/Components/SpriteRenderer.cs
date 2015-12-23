@@ -39,22 +39,31 @@ namespace EatMe.Components
 			Transperency = 1.0f;
 		}
 
-		public void Draw()
+		public bool Draw()
 		{
-			//TODO: Ask about && and function calls
-			if(Texture != null && _transform != null && IsInView())
+			if (_transform == null)
 			{
-				Main.SpriteBatch.Draw(Texture, _transform.Position, null, Color * Transperency, (float)_transform.Rotation, Origin, _transform.Scale, SpriteEffects.None, 0.1f);
+				_transform = Entity.GetComponent<Transform>();
 			}
+
+			if (Texture == null || _transform == null || !IsInView()) return false;
+
+
+			Main.SpriteBatch.Draw(Texture, _transform.Position, null, Color * Transperency, (float)_transform.Rotation, Origin, _transform.Scale, SpriteEffects.None, 0.1f);
+
+			return true;
 		}
 
 		private bool IsInView()
 		{
 			var maxDimension = Math.Max(Width, Height);
 			Vector2 pos = _transform.Position;
-//			if(Main.MainCamera.)
+
 			//TODO: Make Camera check for point in view with transofrmations
-			return true;
+
+			Rectangle container = new Rectangle((int)(pos.X - Origin.X), (int)(pos.Y - Origin.Y), maxDimension, maxDimension);
+
+			return Main.MainCamera.IsInView(container);
 		}
 	}
 }

@@ -6,11 +6,11 @@ namespace EatMe.Prefabs
 {
 	public class Camera : Prefab
 	{
-		private static readonly Camera Instance = new Camera();
+		private static readonly Camera ThisPrefab = new Camera {Tag = "Camera"};
 
-		public static Camera GetInstance()
+		public static Camera GetPrefab()
 		{
-			return Instance;
+			return ThisPrefab;
 		}
 
 		public static Entity Instantiate(int screenWidth, int screenHeight)
@@ -19,7 +19,9 @@ namespace EatMe.Prefabs
 			entity.AttachComponent(new Transform());
 			entity.AttachComponent(new OrtographicCamera(new Point(screenWidth, screenHeight)));
 
-			Instance.World.AddEntity(entity);
+			entity.Tag = ThisPrefab.Tag;
+
+			ThisPrefab.World.AddEntity(entity);
 
 			return entity;
 		}

@@ -1,4 +1,5 @@
 ﻿using EatMe.Components;
+using EatMe.Common;
 using ECS;
 using Microsoft.Xna.Framework;
 
@@ -14,12 +15,17 @@ namespace EatMe.Prefabs
 			return ThisPrefab;
 		}
 
-		public static Entity Instantiate(Vector2 position,string skinName)
+		public static Entity Instantiate(string skinName)
+		{
+			return Instantiate(HelperMethods.GetRandomPositionInBounds(), skinName);
+		}
+
+		public static Entity Instantiate(Vector2 poistion, string skinName)
 		{
 			Entity entity = new Entity();
 			entity.AttachComponent(new Transform()
 			{
-				Position = position
+				Position = poistion
 			});
 			entity.AttachComponent(new SpriteRenderer(string.Format("{0}{1}", Configuration.SpritesFolder ,skinName)) {DrawLayer = Configuration.PlayerMinDrawLayer});
 			entity.AttachComponent(new CellScript()

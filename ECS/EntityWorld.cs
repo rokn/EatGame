@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace ECS
@@ -8,7 +9,9 @@ namespace ECS
 		#region Fields
 
 		private readonly List<Entity> _entities;
+		private readonly List<Entity> _entitiesInView;
 		private readonly List<Entity> _removeList;
+		private readonly List<Entity> _additionList;
 
 		#endregion
 
@@ -18,15 +21,20 @@ namespace ECS
 		{
 			_entities = new List<Entity>();
 			_removeList = new List<Entity>();
+			DrawCalls = 0;
+			_entitiesInView = new List<Entity>();
+			_additionList = new List<Entity>();
 		}
 
 		#endregion
+
+		public int DrawCalls { get; private set; }
 
 		#region Entity Managment
 
 		public void AddEntity(Entity entity)
 		{
-			_entities.Add(entity);
+			_additionList.Add(entity);
 
 			foreach (var component in entity.GetComponents())
 			{
@@ -60,6 +68,8 @@ namespace ECS
 			return _entities.Where(entity => entity.HasComponent<T>()).ToList();
 		}
 
+		public ReadOnlyCollection<Entity> EntitiesInView => _entitiesInView.AsReadOnly();	
+
 		public void RemoveEntity(Entity entity)
 		{
 			_removeList.Add(entity);
@@ -71,7 +81,8 @@ namespace ECS
 
 		public void Start()
 		{
-			foreach (var component in _entities.SelectMany(entity => entity.GetComponents()))
+			UpdateAdditionList();
+			foreach(var component in _entities.SelectMany(entity => entity.GetComponents()))
 			{
 				component.Start();
 			}
@@ -88,19 +99,25 @@ namespace ECS
 			}
 
 			UpdateRemoveList();
+			UpdateAdditionList();
 		}
 
 		public void Draw()
 		{
+
+			_entitiesInView.Clear();
+			DrawCalls = 0;
+
 			var query = _entities
 				.SelectMany(entity => entity.GetComponents()
 					.OfType<IDrawableComponent>()).ToList();
 
 			var ordered = query.OrderBy(component => component.DrawLayer);
 
-			foreach (IDrawableComponent component in ordered)
+			foreach (IDrawableComponent component in ordered.Where(component => component.Draw()))
 			{
-				component.Draw();
+				DrawCalls ++;
+				_entitiesInView.Add(component.Entity);
 			}
 		}
 
@@ -138,6 +155,16 @@ namespace ECS
 			}
 
 			_removeList.Clear();
+		}
+
+		private void UpdateAdditionList()
+		{
+			foreach(var entity in _additionList)
+			{
+				_entities.Add(entity);
+			}
+
+			_additionList.Clear();
 		}
 	}
 }

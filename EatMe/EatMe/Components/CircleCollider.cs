@@ -27,7 +27,7 @@ namespace EatMe.Components
 
 		public override bool CheckCollision(Collider other)
 		{
-			bool collided = false;
+			var collided = false;
 
 			if (other is CircleCollider)
 			{
